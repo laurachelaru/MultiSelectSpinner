@@ -7,7 +7,6 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatSpinner;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -28,6 +27,9 @@ import java.util.List;
 
 public class MultiSpinner extends AppCompatSpinner implements DialogInterface.OnCancelListener {
 	private static final String TAG = MultiSpinner.class.getSimpleName();
+    public static android.app.AlertDialog.Builder builder;
+    public static android.app.AlertDialog ad;
+    MultiSpinner.MyAdapter adapter;
 	private List<KeyPairBoolData> items;
 	private String defaultText = "";
 	private String spinnerTitle = "";
@@ -35,14 +37,9 @@ public class MultiSpinner extends AppCompatSpinner implements DialogInterface.On
 	private int limit = -1;
 	private int selected = 0;
 	private MultiSpinner.LimitExceedListener limitListener;
-	MultiSpinner.MyAdapter adapter;
-	public static android.app.AlertDialog.Builder builder;
-	public static android.app.AlertDialog ad;
-
 	public MultiSpinner(Context context) {
 		super(context);
 	}
-
 	public MultiSpinner(Context arg0, AttributeSet arg1) {
 		super(arg0, arg1);
 		TypedArray a = arg0.obtainStyledAttributes(arg1, R.styleable.MultiSpinnerSearch);
@@ -57,11 +54,18 @@ public class MultiSpinner extends AppCompatSpinner implements DialogInterface.On
 		Log.i(TAG, "spinnerTitle: "+spinnerTitle);
 		a.recycle();
 	}
-
 	public MultiSpinner(Context arg0, AttributeSet arg1, int arg2) {
 		super(arg0, arg1, arg2);
 	}
 
+    public String getDefaultText() {
+        return defaultText;
+    }
+
+    public void setDefaultText(String defaultText) {
+        this.defaultText = defaultText;
+    }
+	
 	public void setLimit(int limit, MultiSpinner.LimitExceedListener listener) {
 		this.limit = limit;
 		this.limitListener = listener;
@@ -217,11 +221,6 @@ public class MultiSpinner extends AppCompatSpinner implements DialogInterface.On
 			return position;
 		}
 
-		private class ViewHolder {
-			TextView textView;
-			CheckBox checkBox;
-		}
-
 		@Override
 		public View getView(final int position, View convertView, ViewGroup parent) {
 			Log.i(TAG, "getView() enter");
@@ -328,5 +327,10 @@ public class MultiSpinner extends AppCompatSpinner implements DialogInterface.On
 				}
 			};
 		}
+
+        private class ViewHolder {
+            TextView textView;
+            CheckBox checkBox;
+        }
 	}
 }
